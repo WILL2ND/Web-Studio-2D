@@ -5,49 +5,38 @@
   <title>Web Blox 2D — P2P Game Studio</title>
   <script src="https://unpkg.com"></script>
   <style>
-    :root {
-      --bg: #0b0e14; --panel: #131720; --surface: #1a202c; --border: #283040;
-      --text: #e2e8f0; --muted: #8b9bb4; --blue: #3b82f6; --green: #10b981; --red: #ef4444;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-    header { height: 52px; background: var(--panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 10px; position: relative; }
-    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; letter-spacing: 0.4px; color: #fff; }
-    .brand span { background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 3px 7px; border-radius: 5px; font-size: 11px; }
-    .controls { display: flex; align-items: center; gap: 8px; }
-    .pill { background: var(--bg); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: border-color 0.15s; }
-    .pill:hover { border-color: var(--blue); }
-    .pill b { color: var(--green); font-family: monospace; }
-    .pill b.off { color: var(--muted); }
-    input[type="text"] { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; width: 155px; outline: none; transition: border-color 0.15s; }
-    input[type="text"]:focus { border-color: var(--blue); }
-    input:disabled, button:disabled { opacity: 0.4; cursor: not-allowed; }
-    button { background: var(--green); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.15s; display: inline-flex; align-items: center; gap: 5px; }
-    button:hover:not(:disabled) { opacity: 0.9; }
-    button:active:not(:disabled) { transform: scale(0.98); }
-    button.blue { background: var(--blue); }
-    button.sec { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
-    #settings-panel { display: none; position: absolute; top: 58px; right: 16px; width: 280px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; z-index: 40; box-shadow: 0 12px 32px rgba(0,0,0,0.65); }
-    #settings-panel.open { display: block; }
-    .set-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; }
-    main { flex: 1; display: flex; overflow: hidden; }
-    .left { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); min-width: 320px; }
-    .toolbar { height: 36px; background: var(--panel); border-bottom: 1px solid var(--border); padding: 0 12px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); }
-    .tool-group { display: flex; align-items: center; gap: 6px; }
-    .tool-group button { padding: 4px 8px; font-size: 11px; }
-    #sync { padding: 2px 8px; border-radius: 99px; background: rgba(139,155,180,0.12); color: var(--muted); font-weight: 600; }
-    #sync.on { background: rgba(16,185,129,0.15); color: var(--green); }
-    textarea { flex: 1; width: 100%; background: var(--bg); color: #dbeafe; border: none; padding: 14px; font-family: "Fira Code", Consolas, monospace; font-size: 13px; line-height: 1.5; resize: none; outline: none; tab-size: 2; }
-    .right { width: 680px; background: #07090d; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; gap: 12px; }
-    canvas { width: 640px; height: 420px; background: #131720; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-    #status { width: 640px; padding: 8px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
-    #status.err { border-color: var(--red); color: #fca5a5; background: rgba(239,68,68,0.1); }
-    body.fs .left, body.fs header { display: none; }
-    body.fs .right { width: 100vw; height: 100vh; padding: 20px; }
-    body.fs canvas { width: auto; height: calc(100vh - 85px); max-width: 96vw; aspect-ratio: 640 / 420; }
-    body.fs #status { width: min(640px, 96vw); }
-    #exit-fs { display: none; position: fixed; top: 16px; right: 16px; z-index: 50; background: var(--red); }
-    body.fs #exit-fs { display: inline-flex; }
+    :root { --bg:#0b0e14; --panel:#131720; --surf:#1a202c; --bdr:#283040; --txt:#e2e8f0; --mut:#8b9bb4; --blue:#3b82f6; --grn:#10b981; --red:#ef4444; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--txt); font-family:monospace; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+    header { height:50px; background:var(--panel); border-bottom:1px solid var(--bdr); display:flex; align-items:center; justify-content:space-between; padding:0 14px; gap:8px; position:relative; }
+    .brand { font-weight:800; font-size:14px; color:#fff; display:flex; align-items:center; gap:6px; }
+    .brand span { background:linear-gradient(135deg,#3b82f6,#8b5cf6); padding:2px 6px; border-radius:4px; font-size:11px; }
+    .controls { display:flex; align-items:center; gap:6px; }
+    .pill { background:var(--bg); border:1px solid var(--bdr); padding:5px 9px; border-radius:6px; font-size:11px; cursor:pointer; }
+    .pill b { color:var(--grn); } .pill b.off { color:var(--mut); }
+    input[type="text"] { background:var(--bg); border:1px solid var(--bdr); color:var(--txt); padding:5px 8px; border-radius:6px; font-size:12px; width:145px; outline:none; }
+    input:disabled, button:disabled { opacity:0.4; cursor:not-allowed; }
+    button { background:var(--grn); color:#fff; border:none; padding:6px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; }
+    button.blue { background:var(--blue); } button.sec { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); }
+    #settings { display:none; position:absolute; top:54px; right:14px; width:260px; background:var(--panel); border:1px solid var(--bdr); border-radius:8px; padding:14px; z-index:40; box-shadow:0 10px 28px rgba(0,0,0,0.6); font-size:12px; }
+    #settings.open { display:block; }
+    .row { display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:8px; border-top:1px solid var(--bdr); }
+    main { flex:1; display:flex; overflow:hidden; }
+    .left { flex:1; display:flex; flex-direction:column; border-right:1px solid var(--bdr); min-width:300px; }
+    .bar { height:32px; background:var(--panel); border-bottom:1px solid var(--bdr); padding:0 10px; display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--mut); }
+    .bar button { padding:3px 7px; font-size:11px; }
+    #sync { padding:2px 7px; border-radius:99px; background:rgba(139,155,180,0.12); color:var(--mut); }
+    #sync.on { background:rgba(16,185,129,0.15); color:var(--grn); }
+    textarea { flex:1; width:100%; background:var(--bg); color:#dbeafe; border:none; padding:12px; font-family:monospace; font-size:13px; line-height:1.45; resize:none; outline:none; tab-size:2; }
+    .right { width:676px; background:#07090d; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; gap:10px; }
+    canvas { width:640px; height:420px; background:#131720; border:1px solid var(--bdr); border-radius:8px; cursor:crosshair; }
+    #status { width:640px; padding:7px 10px; background:var(--panel); border:1px solid var(--bdr); border-radius:6px; font-size:11px; color:var(--mut); display:flex; justify-content:space-between; }
+    #status.err { border-color:var(--red); color:#fca5a5; }
+    body.fs .left, body.fs header { display:none; }
+    body.fs .right { width:100vw; height:100vh; }
+    body.fs canvas { width:auto; height:calc(100vh - 80px); max-width:96vw; aspect-ratio:640/420; }
+    #exit-fs { display:none; position:fixed; top:14px; right:14px; z-index:50; background:var(--red); }
+    body.fs #exit-fs { display:block; }
   </style>
 </head>
 <body>
@@ -55,268 +44,156 @@
   <header>
     <div class="brand"><span>2D</span> WEB BLOX STUDIO</div>
     <div class="controls">
-      <div class="pill" id="copy-id" title="Click to copy Peer ID">ID: <b id="my-id" class="off">Private (Off)</b></div>
-      <input type="text" id="join-id" placeholder="Paste Friend's ID..." disabled />
+      <div class="pill" id="copy-id">ID: <b id="my-id" class="off">Private (Off)</b></div>
+      <input type="text" id="join-id" placeholder="Friend's ID..." disabled />
       <button class="blue" id="btn-join" disabled>Join</button>
       <button id="btn-run">▶ Run &amp; Sync</button>
       <button class="sec" id="btn-fs">⛶ Fullscreen</button>
-      <button class="sec" id="btn-settings">⚙ Settings</button>
+      <button class="sec" id="btn-set">⚙ Settings</button>
     </div>
-    <div id="settings-panel">
-      <strong>⚙ Studio Privacy &amp; Room</strong>
-      <div class="set-row">
-        <span>Open P2P Networking</span>
-        <input type="checkbox" id="p2p-toggle" />
-      </div>
-      <p style="font-size:11px; color:var(--muted); margin-top:8px; line-height:1.45;">
-        Rooms start <b>Private</b> by default. Toggle on to share your ID, co-edit live code, and play together. Uncheck to disconnect immediately.
-      </p>
+    <div id="settings">
+      <b>⚙ Studio Privacy</b>
+      <div class="row"><span>Open P2P Networking</span><input type="checkbox" id="p2p-on" /></div>
+      <p style="font-size:11px;color:var(--mut);margin-top:8px;">Private by default. Enable to co-edit code &amp; play together. Uncheck to close P2P.</p>
     </div>
   </header>
   <main>
     <section class="left">
-      <div class="toolbar">
-        <span>SCRIPT EDITOR &bull; <span id="line-count">0 lines</span></span>
-        <div class="tool-group">
+      <div class="bar">
+        <span>CODE &bull; <span id="lines">0 lines</span></span>
+        <div style="display:flex;gap:5px;align-items:center;">
           <input type="file" id="file-in" accept=".js,.txt" hidden />
-          <button class="sec" id="btn-import">📂 Import</button>
-          <button class="sec" id="btn-export">💾 Export</button>
-          <button class="sec" id="btn-reset">↺ Reset</button>
+          <button class="sec" id="btn-imp">📂 Import</button>
+          <button class="sec" id="btn-exp">💾 Export</button>
+          <button class="sec" id="btn-rst">↺ Reset</button>
           <span id="sync">● Private</span>
         </div>
       </div>
       <textarea id="editor" spellcheck="false"></textarea>
     </section>
-    <section class="right" id="stage">
+    <section class="right">
       <canvas id="c" width="640" height="420"></canvas>
-      <div id="status"><span id="status-txt">Ready — Private mode active.</span><span>640×420 @ 60FPS</span></div>
+      <div id="status"><span id="st-txt">Ready (Private).</span><span>L-Click: Mine | R-Click: Place | 1-5: Slot</span></div>
     </section>
   </main>
   <script>
-    const DEFAULT_CODE = `function update() {
-  ctx.fillStyle = '#131720';
-  ctx.fillRect(0, 0, 640, 420);
-  ctx.fillStyle = '#10b981';
-  ctx.fillRect(0, 380, 640, 40);
-  ctx.fillStyle = '#283040';
-  ctx.fillRect(220, 270, 200, 16);
-
-  if (keys.ArrowLeft || keys.KeyA) me.vx = -4;
-  else if (keys.ArrowRight || keys.KeyD) me.vx = 4;
-  else me.vx *= 0.8;
-
-  if ((keys.ArrowUp || keys.KeyW || keys.Space) && me.g) { me.vy = -11; me.g = false; }
-
-  me.vy += 0.55; me.x += me.vx; me.y += me.vy;
-
-  if (me.y + me.h >= 380) { me.y = 380 - me.h; me.vy = 0; me.g = true; }
-  if (me.vy >= 0 && me.x + me.w > 220 && me.x < 420 && me.y + me.h >= 270 && me.y + me.h <= 286) {
-    me.y = 270 - me.h; me.vy = 0; me.g = true;
+    const DEFAULT_CODE = `// 2D MINECRAFT SANDBOX — L-Click: Mine | R-Click: Place | [1-5]: Slot | WASD/Arrows: Move
+const T = 24, GW = 64, GH = 22;
+const BL = [null, {c:'#78350f',t:'#92400e'}, {c:'#78350f',t:'#22c55e'}, {c:'#64748b',t:'#94a3b8'}, {c:'#9a3412',t:'#b45309'}, {c:'#15803d',t:'#4ade80'}];
+const mc = window._wb || (() => {
+  const map = Array.from({length:GH}, () => Array(GW).fill(0));
+  for (let x = 0; x < GW; x++) {
+    const h = Math.floor(10 + Math.sin(x * 0.16) * 2.5);
+    for (let y = h; y < GH; y++) map[y][x] = y === h ? 2 : (y < h + 3 ? 1 : 3);
+    if (x > 3 && x < GW - 3 && x % 8 === 0) {
+      for (let i = 1; i <= 3; i++) map[h - i][x] = 4;
+      for (let lx = -1; lx <= 1; lx++) for (let ly = -5; ly <= -3; ly++) map[h + ly][x + lx] = 5;
+    }
   }
-  me.x = Math.max(0, Math.min(640 - me.w, me.x));
-
-  for (const id in peers) {
-    const p = peers[id];
-    ctx.fillStyle = '#f97316';
-    ctx.fillRect(p.x, p.y, p.w, p.h);
-    ctx.fillStyle = '#fff';
-    ctx.fillText(id.slice(0, 6), p.x, p.y - 5);
+  const c = document.getElementById('c');
+  if (!c._b) {
+    c._b = 1; c.oncontextmenu = e => e.preventDefault();
+    c.onmousemove = e => { const r = c.getBoundingClientRect(); if(window._wb){ _wb.mx=(e.clientX-r.left)*(640/r.width); _wb.my=(e.clientY-r.top)*(420/r.height); }};
+    c.onmousedown = e => { if(window._wb) _wb.md = e.button === 2 ? 2 : 1; };
+    window.onmouseup = () => { if(window._wb) _wb.md = 0; };
   }
-
-  ctx.fillStyle = '#3b82f6';
-  ctx.fillRect(me.x, me.y, me.w, me.h);
-  ctx.fillStyle = '#fff';
-  ctx.fillText('YOU', me.x + 2, me.y - 5);
+  return (window._wb = { t:0, cx:0, cy:0, slot:1, inv: new Array(6).fill(15), mx:0, my:0, md:0, map });
+})();
+const solid = (x, y) => { const gx = Math.floor(x/T), gy = Math.floor(y/T); return gx<0||gx>=GW||gy>=GH ? true : (gy<0 ? false : mc.map[gy][gx]>0); };
+function update() {
+  mc.t++; me.w = 16; me.h = 26;
+  for (let k = 1; k <= 5; k++) if (keys['Digit'+k]) mc.slot = k;
+  me.vx = (keys.ArrowLeft||keys.KeyA) ? -3.6 : ((keys.ArrowRight||keys.KeyD) ? 3.6 : me.vx * 0.78);
+  if ((keys.ArrowUp||keys.KeyW||keys.Space) && me.g) { me.vy = -8.5; me.g = false; }
+  me.vy = Math.min(11, me.vy + 0.5); me.x += me.vx;
+  if (solid(me.x,me.y+4)||solid(me.x,me.y+22)||solid(me.x+16,me.y+4)||solid(me.x+16,me.y+22)) me.x -= me.vx;
+  me.y += me.vy; me.g = false;
+  if (me.vy>=0 && (solid(me.x+2,me.y+26)||solid(me.x+14,me.y+26))) { me.y = Math.floor((me.y+26)/T)*T-26; me.vy=0; me.g=true; }
+  else if (me.vy<0 && (solid(me.x+2,me.y)||solid(me.x+14,me.y))) { me.y = (Math.floor(me.y/T)+1)*T; me.vy=0; }
+  mc.cx += (Math.max(0, Math.min(GW*T-640, me.x-312)) - mc.cx) * 0.15;
+  mc.cy += (Math.max(0, Math.min(GH*T-420, me.y-200)) - mc.cy) * 0.15;
+  const gx = Math.floor((mc.mx+mc.cx)/T), gy = Math.floor((mc.my+mc.cy)/T);
+  const ok = gx>=0&&gx<GW&&gy>=0&&gy<GH && Math.hypot(gx*T+12-(me.x+8), gy*T+12-(me.y+13)) < 110;
+  if (ok && mc.md === 1 && mc.map[gy][gx] > 0) { mc.inv[mc.map[gy][gx]]++; mc.map[gy][gx] = 0; mc.md = 0; }
+  if (ok && mc.md === 2 && mc.map[gy][gx] === 0 && mc.inv[mc.slot] > 0) { mc.map[gy][gx] = mc.slot; mc.inv[mc.slot]--; mc.md = 0; }
+  ctx.fillStyle = '#38bdf8'; ctx.fillRect(0, 0, 640, 420);
+  ctx.save(); ctx.translate(-Math.floor(mc.cx), -Math.floor(mc.cy));
+  for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) {
+    const id = mc.map[y][x]; if (!id) continue;
+    ctx.fillStyle = BL[id].c; ctx.fillRect(x*T, y*T, T, T);
+    ctx.fillStyle = BL[id].t; ctx.fillRect(x*T, y*T, T, 5);
+  }
+  if (ok) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(gx*T+1, gy*T+1, T-2, T-2); }
+  const drawP = (p, lbl) => {
+    const w = Math.abs(p.vx||0) > 0.3 ? Math.sin(mc.t*0.35)*4 : 0;
+    ctx.fillStyle='#1d4ed8'; ctx.fillRect(p.x+3+w,p.y+18,4,8); ctx.fillRect(p.x+9-w,p.y+18,4,8);
+    ctx.fillStyle='#06b6d4'; ctx.fillRect(p.x+2,p.y+8,12,10); ctx.fillStyle='#d97706'; ctx.fillRect(p.x+2,p.y,12,8);
+    ctx.fillStyle='#fff'; ctx.font='10px monospace'; ctx.fillText(lbl, p.x-4, p.y-5);
+  };
+  for (const id in peers) drawP(peers[id], id.slice(0,5));
+  drawP(me, 'STEVE'); ctx.restore();
+  for (let i = 1; i <= 5; i++) {
+    const sx = 205 + (i-1)*46; ctx.fillStyle = mc.slot===i ? '#334155' : '#0f172a'; ctx.fillRect(sx, 376, 40, 34);
+    ctx.strokeStyle = mc.slot===i ? '#fbbf24' : '#475569'; ctx.strokeRect(sx, 376, 40, 34);
+    ctx.fillStyle = BL[i].c; ctx.fillRect(sx+12, 382, 16, 16); ctx.fillStyle = BL[i].t; ctx.fillRect(sx+12, 382, 16, 4);
+    ctx.fillStyle = '#fff'; ctx.fillText(mc.inv[i], sx+4, 406);
+  }
 }`;
-
-    const canvas = document.getElementById('c');
-    const ctx = canvas.getContext('2d');
-    const editor = document.getElementById('editor');
-    const myIdEl = document.getElementById('my-id');
-    const joinInput = document.getElementById('join-id');
-    const joinBtn = document.getElementById('btn-join');
-    const statusBox = document.getElementById('status');
-    const statusTxt = document.getElementById('status-txt');
-    const syncEl = document.getElementById('sync');
-    const lineCountEl = document.getElementById('line-count');
-    const p2pToggle = document.getElementById('p2p-toggle');
-    const settingsPanel = document.getElementById('settings-panel');
-    const fileIn = document.getElementById('file-in');
-
-    const me = { id: 'local', x: 100, y: 200, w: 24, h: 24, vx: 0, vy: 0, g: false };
-    const peers = {}, keys = {};
-    let conns = {}, peer = null, p2pEnabled = false, updateFn = () => {}, remoteLock = false, editTimer = null;
-
-    function updateLines() { lineCountEl.textContent = `${editor.value.split('\n').length} lines`; }
-    editor.value = DEFAULT_CODE;
-    updateLines();
-
-    window.addEventListener('keydown', (e) => {
+    const canvas = document.getElementById('c'), ctx = canvas.getContext('2d'), editor = document.getElementById('editor');
+    const myIdEl = document.getElementById('my-id'), joinIn = document.getElementById('join-id'), joinBtn = document.getElementById('btn-join');
+    const stBox = document.getElementById('status'), stTxt = document.getElementById('st-txt'), syncEl = document.getElementById('sync');
+    const me = { id:'local', x:100, y:100, w:16, h:26, vx:0, vy:0, g:false }, peers = {}, keys = {};
+    let conns = {}, peer = null, p2p = false, updateFn = () => {}, lock = false, timer = null;
+    const updLines = () => document.getElementById('lines').textContent = editor.value.split('\n').length + ' lines';
+    editor.value = DEFAULT_CODE; updLines();
+    window.addEventListener('keydown', e => {
       if (e.key === 'Escape' && document.body.classList.contains('fs')) toggleFS(false);
-      if (document.activeElement !== editor && document.activeElement !== joinInput) keys[e.code] = true;
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runSync(); return; }
+      if (document.activeElement !== editor && document.activeElement !== joinIn) keys[e.code] = true;
     });
-    window.addEventListener('keyup', (e) => { keys[e.code] = false; });
-    canvas.addEventListener('mousedown', () => document.activeElement?.blur());
-    document.getElementById('btn-settings').onclick = () => settingsPanel.classList.toggle('open');
-
-    // Click ID pill to copy
-    document.getElementById('copy-id').onclick = () => {
-      if (!p2pEnabled || !me.id || me.id === 'local') return;
-      navigator.clipboard?.writeText(me.id);
-      const prev = myIdEl.textContent;
-      myIdEl.textContent = 'Copied!';
-      setTimeout(() => { if (p2pEnabled) myIdEl.textContent = prev; }, 900);
-    };
-
-    // Fullscreen Toggle
-    function toggleFS(force) {
-      const on = force !== undefined ? force : !document.body.classList.contains('fs');
-      document.body.classList.toggle('fs', on);
-      document.activeElement?.blur();
-      if (on && document.documentElement.requestFullscreen && !document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else if (!on && document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
+    window.addEventListener('keyup', e => keys[e.code] = false);
+    canvas.onmousedown = () => document.activeElement?.blur();
+    document.getElementById('btn-set').onclick = () => document.getElementById('settings').classList.toggle('open');
+    document.getElementById('copy-id').onclick = () => { if (p2p && me.id !== 'local') { navigator.clipboard?.writeText(me.id); const p = myIdEl.textContent; myIdEl.textContent = 'Copied!'; setTimeout(() => { if(p2p) myIdEl.textContent = p; }, 800); }};
+    function toggleFS(f) { const on = f !== undefined ? f : !document.body.classList.contains('fs'); document.body.classList.toggle('fs', on); if (on) document.documentElement.requestFullscreen?.().catch(()=>{}); else if (document.fullscreenElement) document.exitFullscreen?.().catch(()=>{}); }
+    document.getElementById('btn-fs').onclick = () => toggleFS(true); document.getElementById('exit-fs').onclick = () => toggleFS(false);
+    document.getElementById('btn-exp').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([editor.value])); a.download = 'web-blox-game.js'; a.click(); };
+    document.getElementById('btn-imp').onclick = () => document.getElementById('file-in').click();
+    document.getElementById('file-in').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { editor.value = r.result; updLines(); runSync(); }; r.readAsText(f); };
+    document.getElementById('btn-rst').onclick = () => { editor.value = DEFAULT_CODE; updLines(); runSync(); };
+    const setSt = (m, err) => { stTxt.textContent = m; stBox.className = err ? 'err' : ''; };
+    const updSync = t => { syncEl.className = p2p ? 'on' : ''; syncEl.textContent = !p2p ? '● Private' : (t || `● ${Object.keys(conns).length} Peer(s)`); };
+    document.getElementById('p2p-on').onchange = e => {
+      if (e.target.checked) {
+        p2p = true; myIdEl.textContent = '...'; myIdEl.className = ''; joinIn.disabled = joinBtn.disabled = false; updSync('● Opening...');
+        peer = new Peer(); peer.on('open', id => { me.id = id; myIdEl.textContent = id; updSync(); setSt('P2P open.'); });
+        peer.on('connection', c => bind(c, true)); peer.on('error', err => setSt('P2P Error: ' + err.message, true));
+      } else {
+        p2p = false; for (const k in conns) conns[k].close(); conns = {}; for (const k in peers) delete peers[k];
+        peer?.destroy(); peer = null; me.id = 'local'; myIdEl.textContent = 'Private (Off)'; myIdEl.className = 'off'; joinIn.disabled = joinBtn.disabled = true; updSync(); setSt('Room private.');
       }
-    }
-    document.getElementById('btn-fs').onclick = () => toggleFS(true);
-    document.getElementById('exit-fs').onclick = () => toggleFS(false);
-    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) document.body.classList.remove('fs'); });
-
-    // Import, Export & Reset
-    document.getElementById('btn-export').onclick = () => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([editor.value], { type: 'text/javascript' }));
-      a.download = 'web-blox-game.js';
-      a.click();
-      URL.revokeObjectURL(a.href);
-      setStatus('Exported web-blox-game.js');
     };
-
-    document.getElementById('btn-import').onclick = () => fileIn.click();
-    fileIn.onchange = (e) => {
-      const file = e.target.files;
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        editor.value = reader.result;
-        updateLines();
-        if (compile(editor.value)) {
-          broadcast({ t: 'run', code: editor.value });
-          setStatus(`Imported & running "${file.name}"`);
-        }
-        fileIn.value = '';
-      };
-      reader.readAsText(file);
-    };
-
-    document.getElementById('btn-reset').onclick = () => {
-      editor.value = DEFAULT_CODE;
-      updateLines();
-      if (compile(editor.value)) broadcast({ t: 'run', code: editor.value });
-    };
-
-    function setStatus(msg, err = false) { statusTxt.textContent = msg; statusBox.className = err ? 'err' : ''; }
-
-    function updateSyncLabel(txt) {
-      if (!p2pEnabled) { syncEl.textContent = '● Private'; syncEl.className = ''; return; }
-      syncEl.className = 'on';
-      if (txt) { syncEl.textContent = txt; clearTimeout(syncEl._t); syncEl._t = setTimeout(() => updateSyncLabel(), 1000); }
-      else { const n = Object.keys(conns).length; syncEl.textContent = n ? `● ${n} Peer(s)` : '● P2P Open'; }
-    }
-
-    function openP2P() {
-      if (peer) return;
-      p2pEnabled = true; myIdEl.textContent = 'connecting...'; myIdEl.className = '';
-      joinInput.disabled = false; joinBtn.disabled = false; updateSyncLabel('● Opening...');
-      peer = new Peer();
-      peer.on('open', (id) => { me.id = id; myIdEl.textContent = id; updateSyncLabel(); setStatus('P2P open — click ID to copy.'); });
-      peer.on('connection', (c) => bindConn(c, true));
-      peer.on('error', (e) => setStatus('Peer Error: ' + e.message, true));
-    }
-
-    function closeP2P() {
-      p2pEnabled = false;
-      for (const id in conns) conns[id].close();
-      conns = {};
-      for (const id in peers) delete peers[id];
-      if (peer) { peer.destroy(); peer = null; }
-      me.id = 'local'; myIdEl.textContent = 'Private (Off)'; myIdEl.className = 'off';
-      joinInput.disabled = true; joinBtn.disabled = true; updateSyncLabel();
-      setStatus('P2P closed — room is private.');
-    }
-
-    p2pToggle.onchange = () => (p2pToggle.checked ? openP2P() : closeP2P());
-
+    const bcast = m => { if (p2p) for (const k in conns) if (conns[k].open) conns[k].send(m); };
     function compile(code) {
       try {
-        window._wb = null;
-        const fn = new Function('ctx', 'me', 'peers', 'keys', code + '\n; return update;')(ctx, me, peers, keys);
-        if (typeof fn !== 'function') throw new Error('Define function update()');
-        updateFn = fn; setStatus(p2pEnabled ? 'Running & synced.' : 'Running locally (Private).');
-        return true;
-      } catch (e) { setStatus('Compile Error: ' + e.message, true); return false; }
+        window._wb = null; ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha = 1;
+        const fn = new Function('ctx','me','peers','keys', code + '\n; return typeof update==="function"?update:null;')(ctx,me,peers,keys);
+        if (!fn) throw new Error('Define function update()');
+        updateFn = fn; setSt(p2p ? 'Running & synced.' : 'Running locally.'); return true;
+      } catch (e) { setSt('Error: ' + e.message, true); return false; }
     }
-
-    function broadcast(msg) { if (p2pEnabled) for (const id in conns) if (conns[id].open) conns[id].send(msg); }
-
-    function applyCode(code, run) {
-      if (typeof code === 'string' && editor.value !== code) {
-        const [s, e] = [editor.selectionStart, editor.selectionEnd];
-        remoteLock = true; editor.value = code; editor.setSelectionRange(Math.min(s, code.length), Math.min(e, code.length)); remoteLock = false;
-        updateLines();
-      }
-      if (run) compile(code);
+    function bind(c, host) {
+      if (!p2p) return c.close();
+      c.on('open', () => { conns[c.peer] = c; updSync(); if (host) c.send({ t:'run', code:editor.value }); });
+      c.on('data', d => { if (!d||!p2p) return; if (d.t==='pos') peers[c.peer]=d.me; if (d.t==='edit'||d.t==='run') { if (editor.value!==d.code) { lock=true; editor.value=d.code; lock=false; updLines(); } if (d.t==='run') compile(d.code); }});
+      c.on('close', () => { delete conns[c.peer]; delete peers[c.peer]; updSync(); });
     }
-
-    function bindConn(c, isHost) {
-      if (!p2pEnabled) return c.close();
-      c.on('open', () => { conns[c.peer] = c; updateSyncLabel(`● Joined: ${c.peer.slice(0, 6)}`); if (isHost) c.send({ t: 'run', code: editor.value }); });
-      c.on('data', (d) => {
-        if (!d || !p2pEnabled) return;
-        if (d.t === 'pos') peers[c.peer] = d.me;
-        if (d.t === 'edit') { applyCode(d.code, false); updateSyncLabel('● Syncing...'); }
-        if (d.t === 'run') { applyCode(d.code, true); updateSyncLabel('● Synced!'); }
-      });
-      c.on('close', () => { delete conns[c.peer]; delete peers[c.peer]; updateSyncLabel('● Peer left'); });
-    }
-
-    editor.addEventListener('input', () => {
-      updateLines();
-      if (remoteLock || !p2pEnabled) return;
-      clearTimeout(editTimer);
-      editTimer = setTimeout(() => { broadcast({ t: 'edit', code: editor.value }); updateSyncLabel('● Sent'); }, 60);
-    });
-
-    editor.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        const [s, end] = [editor.selectionStart, editor.selectionEnd];
-        editor.value = editor.value.slice(0, s) + '  ' + editor.value.slice(end);
-        editor.selectionStart = editor.selectionEnd = s + 2; editor.dispatchEvent(new Event('input'));
-      }
-    });
-
-    joinBtn.onclick = () => {
-      const id = joinInput.value.trim();
-      if (p2pEnabled && peer && id && id !== me.id && !conns[id]) bindConn(peer.connect(id, { reliable: true }), false);
-    };
-
-    document.getElementById('btn-run').onclick = () => {
-      if (compile(editor.value)) {
-        document.activeElement?.blur();
-        if (p2pEnabled) { broadcast({ t: 'run', code: editor.value }); updateSyncLabel('● Synced!'); }
-      }
-    };
-
-    compile(editor.value);
-    let lastSend = 0;
-    function loop(t) {
-      try { updateFn(); } catch (e) { setStatus('Runtime Error: ' + e.message, true); }
-      if (p2pEnabled && t - lastSend > 33) { lastSend = t; broadcast({ t: 'pos', me }); }
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
+    editor.oninput = () => { updLines(); if (!lock && p2p) { clearTimeout(timer); timer = setTimeout(() => bcast({ t:'edit', code:editor.value }), 60); }};
+    joinBtn.onclick = () => { const id = joinIn.value.trim(); if (p2p && peer && id && id !== me.id && !conns[id]) bind(peer.connect(id), false); };
+    function runSync() { if (compile(editor.value)) { document.activeElement?.blur(); bcast({ t:'run', code:editor.value }); } }
+    document.getElementById('btn-run').onclick = runSync;
+    compile(editor.value); let last = 0;
+    (function loop(t) { ctx.setTransform(1,0,0,1,0,0); try { updateFn(); } catch (e) { setSt('Runtime Error: ' + e.message, true); } if (p2p && t - last > 33) { last = t; bcast({ t:'pos', me }); } requestAnimationFrame(loop); })(0);
   </script>
 </body>
 </html>
